@@ -38,44 +38,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void buscarTV() {
+        // Conectar directamente a IP fija
+        foundTvIp = "192.168.1.3";
+        
         btnBuscar.setEnabled(false);
         btnConectar.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        tvStatus.setText("Buscando tu TV...\nPor favor espera");
+        tvStatus.setText("Conectando a tu TV...");
         tvDeviceInfo.setVisibility(View.GONE);
 
-        tvDiscovery.discoverTV(new TVDiscovery.DiscoveryCallback() {
-            @Override
-            public void onTVFound(String ip, String name) {
-                runOnUiThread(() -> {
-                    foundTvIp = ip;
-                    progressBar.setVisibility(View.GONE);
-                    btnBuscar.setEnabled(true);
-                    btnConectar.setVisibility(View.VISIBLE);
-                    tvStatus.setText("✓ TV Encontrada");
-                    tvDeviceInfo.setText(name + "\n" + ip);
-                    tvDeviceInfo.setVisibility(View.VISIBLE);
-                    
-                    Toast.makeText(MainActivity.this, 
-                        "TV encontrada! Presiona CONECTAR", 
-                        Toast.LENGTH_LONG).show();
-                });
-            }
-
-            @Override
-            public void onDiscoveryFailed(String error) {
-                runOnUiThread(() -> {
-                    progressBar.setVisibility(View.GONE);
-                    btnBuscar.setEnabled(true);
-                    tvStatus.setText("No se encontró ninguna TV\n" + 
-                        "Verifica que tu TV esté encendida\ny conectada al mismo WiFi");
-                    
-                    Toast.makeText(MainActivity.this, 
-                        "No se encontró TV. Intenta de nuevo", 
-                        Toast.LENGTH_LONG).show();
-                });
-            }
-        });
+        // Simular búsqueda breve
+        new Handler().postDelayed(() -> {
+            progressBar.setVisibility(View.GONE);
+            btnBuscar.setEnabled(true);
+            btnConectar.setVisibility(View.VISIBLE);
+            tvStatus.setText("✓ TV Encontrada");
+            tvDeviceInfo.setText("Android TV\n192.168.1.3");
+            tvDeviceInfo.setVisibility(View.VISIBLE);
+            
+            Toast.makeText(MainActivity.this, 
+                "TV encontrada! Presiona CONECTAR", 
+                Toast.LENGTH_LONG).show();
+        }, 1000);
     }
 
     private void conectarTV() {
