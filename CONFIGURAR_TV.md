@@ -140,3 +140,44 @@ Si tu TV tiene ADB habilitado en el puerto 5555, la app la encontrará sin probl
 ---
 
 **¿Necesitas más ayuda?** La configuración solo toma 2-3 minutos y es muy sencilla.
+
+---
+
+## 🔍 ¿Por qué detecta 2 IPs para la misma TV?
+
+Esto puede pasar por varias razones:
+
+### 1️⃣ Tu TV tiene múltiples interfaces de red:
+- Conexión WiFi (una IP)
+- Conexión Ethernet (otra IP)
+
+**Solución:** La app ahora detecta solo la PRIMERA TV encontrada y se detiene.
+
+### 2️⃣ Dispositivos conectados a la TV:
+- Un Chromecast conectado a la TV
+- Un Android TV Box conectado a la TV
+- Ambos responden en la red
+
+**Solución:** Desconecta temporalmente otros dispositivos Android y busca de nuevo.
+
+### 3️⃣ DHCP asignó múltiples IPs:
+A veces el router asigna temporalmente más de una IP al mismo dispositivo.
+
+**Solución:** 
+1. Reinicia tu Android TV
+2. Reinicia tu router WiFi
+3. Busca de nuevo
+
+---
+
+## ✅ Cómo saber cuál IP es la correcta:
+
+1. En tu Android TV, ve a: **Configuración → Red**
+2. Mira la **dirección IP** mostrada
+3. Usa esa IP en la app
+
+O simplemente:
+- **Prueba con la primera IP** que encuentre la app
+- Si no funciona, prueba con la segunda
+
+---

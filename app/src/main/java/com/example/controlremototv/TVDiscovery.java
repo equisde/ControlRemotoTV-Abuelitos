@@ -9,14 +9,19 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TVDiscovery {
     private static final String TAG = "TVDiscovery";
     private final Context context;
     private final ExecutorService executor;
     private final Handler mainHandler;
+    private final AtomicBoolean tvFound = new AtomicBoolean(false);
+    private final Set<String> scannedHosts = new HashSet<>();
 
     public interface DiscoveryCallback {
         void onTVFound(String ip, String name);
@@ -30,6 +35,9 @@ public class TVDiscovery {
     }
 
     public void discoverTV(DiscoveryCallback callback) {
+        tvFound.set(false);
+        scannedHosts.clear();
+        
         executor.execute(() -> {
             try {
                 String localIp = getLocalIpAddress();
@@ -57,15 +65,15 @@ public class TVDiscovery {
     }
 
     private boolean scanNetwork(String subnet, DiscoveryCallback callback) {
-        final boolean[] found = {false};
-        
         for (int i = 1; i < 255; i++) {
             final String host = subnet + "." + i;
             executor.execute(() -> {
-                if (checkAndroidTV(host)) {
-                    synchronized (found) {
-                        if (!found[0]) {
-                            found[0] = true;
+                if (!tvFound.get() && checkAndroidTV(host)) {
+                    synchronized (scannedHosts) {
+                        if (!tvFound.get()) {
+                            tvFound.set(true);
+                            scannedHosts.add(host);
+                            Log.d(TAG, "Android TV confirmada en: " + host);
                             mainHandler.post(() -> 
                                 callback.onTVFound(host, "Android TV"));
                         }
@@ -80,25 +88,17 @@ public class TVDiscovery {
             e.printStackTrace();
         }
 
-        return found[0];
+        return tvFound.get();
     }
 
     private boolean checkAndroidTV(String host) {
-        // Verificar puerto 5555 (ADB - específico de Android)
+        if (tvFound.get()) {
+            return false;
+        }
+        
+        // Solo verificar puerto ADB 5555 (el más específico de Android TV)
         if (checkADBPort(host)) {
             Log.d(TAG, "Android TV encontrada (ADB) en: " + host + ":5555");
-            return true;
-        }
-        
-        // Verificar puerto 8008 (Google Cast - usado por Android TV)
-        if (checkPort(host, 8008, 300)) {
-            Log.d(TAG, "Android TV encontrada (Cast) en: " + host + ":8008");
-            return true;
-        }
-        
-        // Verificar puerto 9000 (Android TV Remote Service)
-        if (checkPort(host, 9000, 300)) {
-            Log.d(TAG, "Android TV encontrada (Remote) en: " + host + ":9000");
             return true;
         }
         
@@ -108,37 +108,26 @@ public class TVDiscovery {
     private boolean checkADBPort(String host) {
         try {
             Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(host, 5555), 400);
+            socket.connect(new InetSocketAddress(host, 5555), 500);
             
             // Verificar si responde como ADB
-            socket.setSoTimeout(300);
-            byte[] buffer = new byte[4];
+            socket.setSoTimeout(400);
+            byte[] buffer = new byte[8];
             int read = socket.getInputStream().read(buffer);
             socket.close();
             
-            // Si hay datos, probablemente es ADB
+            // Si hay datos o timeout, probablemente es ADB
             if (read > 0) {
                 Log.d(TAG, "Dispositivo ADB detectado en: " + host);
                 return true;
             }
         } catch (SocketTimeoutException e) {
-            // Timeout al leer, pero puerto abierto - puede ser ADB
+            // Timeout al leer, pero puerto abierto - es ADB
             return true;
         } catch (IOException e) {
             // Puerto cerrado o no es ADB
         }
         return false;
-    }
-    
-    private boolean checkPort(String host, int port, int timeout) {
-        try {
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(host, port), timeout);
-            socket.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
     }
 
     private String getLocalIpAddress() {
