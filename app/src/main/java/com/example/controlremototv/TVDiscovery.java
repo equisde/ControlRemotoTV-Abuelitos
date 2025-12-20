@@ -5,9 +5,10 @@ import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +20,6 @@ public class TVDiscovery {
     private final ExecutorService executor;
     private final Handler mainHandler;
     private final AtomicBoolean tvFound = new AtomicBoolean(false);
-    private String foundIp = null;
 
     public interface DiscoveryCallback {
         void onTVFound(String ip, String name);
@@ -28,143 +28,102 @@ public class TVDiscovery {
 
     public TVDiscovery(Context context) {
         this.context = context;
-        this.executor = Executors.newSingleThreadExecutor();
+        this.executor = Executors.newFixedThreadPool(50);
         this.mainHandler = new Handler(Looper.getMainLooper());
     }
 
     public void discoverTV(DiscoveryCallback callback) {
         tvFound.set(false);
-        foundIp = null;
         
         executor.execute(() -> {
             try {
                 String localIp = getLocalIpAddress();
                 if (localIp == null) {
                     mainHandler.post(() -> 
-                        callback.onDiscoveryFailed("No se puede obtener dirección IP. Verifica que estés conectado a WiFi."));
+                        callback.onDiscoveryFailed("Conéctate a WiFi primero"));
                     return;
                 }
 
-                Log.d(TAG, "Tu IP local: " + localIp);
+                Log.d(TAG, "Tu IP: " + localIp);
                 String subnet = localIp.substring(0, localIp.lastIndexOf('.'));
+                Log.d(TAG, "Buscando en: " + subnet + ".0/24");
+
+                scanNetwork(subnet, callback);
                 
-                // Buscar usando ARP (más confiable que port scanning)
-                String tvIp = findTVByARP(subnet);
+                // Esperar a que termine el escaneo
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 
-                if (tvIp != null && !tvFound.getAndSet(true)) {
-                    foundIp = tvIp;
-                    String finalIp = tvIp;
-                    Log.d(TAG, "✅ Android TV encontrada: " + finalIp);
+                if (!tvFound.get()) {
                     mainHandler.post(() -> 
-                        callback.onTVFound(finalIp, "Android TV (" + finalIp + ")"));
-                } else {
-                    mainHandler.post(() -> 
-                        callback.onDiscoveryFailed("No se encontró Android TV.\n\nAsegúrate de:\n1. La TV está encendida\n2. Conectada al mismo WiFi\n3. ADB habilitado en la TV"));
+                        callback.onDiscoveryFailed("No se encontró TV.\n\n¿Tienes ADB habilitado?\nLee: CONFIGURAR_TV.md"));
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error: " + e.getMessage(), e);
                 mainHandler.post(() -> 
-                    callback.onDiscoveryFailed("Error al buscar: " + e.getMessage()));
+                    callback.onDiscoveryFailed("Error: " + e.getMessage()));
             }
         });
     }
 
-    private String findTVByARP(String subnet) {
-        Log.d(TAG, "Buscando dispositivos en subnet: " + subnet + ".0/24");
+    private void scanNetwork(String subnet, DiscoveryCallback callback) {
+        Log.d(TAG, "Escaneando red completa...");
         
-        // Primero hacer ping a toda la subnet para popular tabla ARP
-        ExecutorService pingExecutor = Executors.newFixedThreadPool(50);
         for (int i = 1; i < 255; i++) {
             final String host = subnet + "." + i;
-            pingExecutor.execute(() -> {
-                try {
-                    InetAddress.getByName(host).isReachable(200);
-                } catch (Exception ignored) {}
-            });
-        }
-        
-        pingExecutor.shutdown();
-        try {
-            pingExecutor.awaitTermination(3, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Ahora leer tabla ARP y buscar dispositivos Android
-        try {
-            Process process = Runtime.getRuntime().exec("cat /proc/net/arp");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Formato: IP address HW type Flags HW address Mask Device
-                String[] parts = line.split("\\s+");
-                if (parts.length >= 4 && !line.contains("IP address")) {
-                    String ip = parts[0];
-                    String mac = parts[3];
-                    
-                    Log.d(TAG, "ARP: " + ip + " -> MAC: " + mac);
-                    
-                    // Verificar si es Android TV por MAC address (OUI)
-                    if (isAndroidTVMac(mac) || ip.startsWith(subnet)) {
-                        // Verificar que tenga puerto 5555 abierto
-                        if (checkADBPort(ip)) {
-                            reader.close();
-                            return ip;
+            executor.execute(() -> {
+                if (!tvFound.get()) {
+                    if (isReachable(host)) {
+                        Log.d(TAG, "Host activo: " + host);
+                        if (hasADB(host)) {
+                            if (!tvFound.getAndSet(true)) {
+                                Log.d(TAG, "✅ ANDROID TV ENCONTRADA: " + host);
+                                mainHandler.post(() -> 
+                                    callback.onTVFound(host, "Android TV"));
+                            }
                         }
                     }
                 }
-            }
-            reader.close();
-        } catch (Exception e) {
-            Log.e(TAG, "Error leyendo ARP: " + e.getMessage());
+            });
         }
-        
-        return null;
     }
-    
-    private boolean isAndroidTVMac(String mac) {
-        if (mac == null || mac.equals("00:00:00:00:00:00")) {
+
+    private boolean isReachable(String host) {
+        try {
+            InetAddress address = InetAddress.getByName(host);
+            return address.isReachable(300);
+        } catch (IOException e) {
             return false;
         }
-        
-        String macUpper = mac.toUpperCase();
-        
-        // OUI de fabricantes comunes de Android TV
-        String[] androidTVOUIs = {
-            "D0:63:B4", // Google (Chromecast)
-            "54:60:09", // Google
-            "30:8C:FB", // Google
-            "6C:AD:F8", // Google (Nest)
-            "34:AF:2C", // Xiaomi (Mi Box)
-            "64:09:80", // Xiaomi
-            "F4:8E:92", // Xiaomi
-            "00:04:4B", // NVIDIA (Shield)
-            "00:04:4F", // NVIDIA
-            "E4:F8:9C", // Amazon (Fire TV)
-            "74:C6:3B", // Amazon
-            "AC:63:BE", // Amazon
-        };
-        
-        for (String oui : androidTVOUIs) {
-            if (macUpper.startsWith(oui)) {
-                Log.d(TAG, "✅ MAC de Android TV detectada: " + mac);
-                return true;
-            }
+    }
+
+    private boolean hasADB(String host) {
+        // Verificar puerto 5555 (ADB)
+        if (checkPort(host, 5555)) {
+            Log.d(TAG, "Puerto ADB abierto: " + host + ":5555");
+            return true;
         }
-        
         return false;
     }
 
-    private boolean checkADBPort(String host) {
+    private boolean checkPort(String host, int port) {
+        Socket socket = null;
         try {
-            java.net.Socket socket = new java.net.Socket();
-            socket.connect(new java.net.InetSocketAddress(host, 5555), 500);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(host, port), 500);
             socket.close();
-            Log.d(TAG, "✅ Puerto ADB 5555 abierto en: " + host);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException ignored) {}
+            }
         }
     }
 
@@ -175,11 +134,13 @@ public class TVDiscovery {
             if (wifiManager != null && wifiManager.isWifiEnabled()) {
                 int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
                 if (ipAddress != 0) {
-                    return String.format("%d.%d.%d.%d",
+                    String ip = String.format("%d.%d.%d.%d",
                         (ipAddress & 0xff),
                         (ipAddress >> 8 & 0xff),
                         (ipAddress >> 16 & 0xff),
                         (ipAddress >> 24 & 0xff));
+                    Log.d(TAG, "IP local: " + ip);
+                    return ip;
                 }
             }
         } catch (Exception e) {
