@@ -3,10 +3,11 @@ package com.example.controlremototv;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,6 +54,7 @@ public class TVController {
 
     public void setTvIp(String ip) {
         this.tvIp = ip;
+        Log.d(TAG, "IP configurada: " + ip);
     }
 
     public void sendCommand(Command command) {
@@ -63,44 +65,68 @@ public class TVController {
 
         executor.execute(() -> {
             try {
+                Log.d(TAG, "Enviando comando: " + command.keyCode + " a " + tvIp);
                 sendADBCommand(command.keyCode);
             } catch (Exception e) {
-                Log.e(TAG, "Error enviando comando: " + e.getMessage());
+                Log.e(TAG, "Error enviando comando: " + e.getMessage(), e);
             }
         });
     }
 
-    private void sendADBCommand(String keyCode) throws IOException {
-        String urlString = "http://" + tvIp + ":5555/input?key=" + keyCode;
-        
+    private void sendADBCommand(String keyCode) {
+        Socket socket = null;
         try {
-            URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setConnectTimeout(2000);
-            conn.setReadTimeout(2000);
+            // Conectar a ADB en puerto 5555
+            socket = new Socket(tvIp, 5555);
+            socket.setSoTimeout(3000);
             
-            int responseCode = conn.getResponseCode();
-            Log.d(TAG, "Comando enviado: " + keyCode + ", Respuesta: " + responseCode);
+            OutputStream out = socket.getOutputStream();
+            InputStream in = socket.getInputStream();
             
-            conn.disconnect();
+            // Enviar handshake ADB
+            String connectMsg = "host:transport-any";
+            sendADBMessage(out, connectMsg);
+            
+            // Leer respuesta
+            byte[] response = new byte[4];
+            in.read(response);
+            String resp = new String(response);
+            
+            if (resp.equals("OKAY")) {
+                // Enviar comando input keyevent
+                String command = "shell:input keyevent " + keyCode;
+                sendADBMessage(out, command);
+                
+                // Leer respuesta
+                in.read(response);
+                resp = new String(response);
+                
+                if (resp.equals("OKAY")) {
+                    Log.d(TAG, "✅ Comando ejecutado: " + keyCode);
+                } else {
+                    Log.e(TAG, "Error en respuesta: " + resp);
+                }
+            } else {
+                Log.e(TAG, "Error en handshake: " + resp);
+            }
+            
         } catch (Exception e) {
-            Log.e(TAG, "Error en sendADBCommand: " + e.getMessage());
-            sendAlternativeCommand(keyCode);
+            Log.e(TAG, "Error ADB: " + e.getMessage(), e);
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
-
-    private void sendAlternativeCommand(String keyCode) {
-        try {
-            String urlString = "http://" + tvIp + ":8080/remote?key=" + keyCode;
-            URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(1000);
-            conn.getResponseCode();
-            conn.disconnect();
-        } catch (Exception e) {
-            Log.e(TAG, "Error en comando alternativo: " + e.getMessage());
-        }
+    
+    private void sendADBMessage(OutputStream out, String message) throws IOException {
+        String lengthHex = String.format("%04x", message.length());
+        String fullMessage = lengthHex + message;
+        out.write(fullMessage.getBytes());
+        out.flush();
     }
 }
