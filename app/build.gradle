@@ -15,6 +15,20 @@ android {
     }
 
     signingConfigs {
+        debug {
+            def storeFile = System.getenv("ANDROID_SIGNING_STORE_FILE")
+            def storePassword = System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
+            def keyAlias = System.getenv("ANDROID_SIGNING_KEY_ALIAS")
+            def keyPassword = System.getenv("ANDROID_SIGNING_KEY_PASSWORD")
+            
+            if (storeFile && storePassword && keyAlias && keyPassword) {
+                this.storeFile = file(storeFile)
+                this.storePassword = storePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+            }
+        }
+        
         release {
             def storeFile = System.getenv("ANDROID_SIGNING_STORE_FILE")
             def storePassword = System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
@@ -39,6 +53,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            if (System.getenv("ANDROID_SIGNING_STORE_FILE")) {
+                signingConfig signingConfigs.debug
+            }
             minifyEnabled false
         }
     }
