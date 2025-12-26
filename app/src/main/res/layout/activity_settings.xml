@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIGURACIÓN"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="24dp" />
+
+        <!-- TAMAÑO DE LETRA -->
+        <TextView
+            android:id="@+id/font_size_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📝 Tamaño de Letras"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/font_size_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <RadioButton
+                android:id="@+id/radio_font_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Normal"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <RadioButton
+                android:id="@+id/radio_font_large"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Grande"
+                android:textSize="18sp"
+                android:gravity="center_vertical" />
+
+            <RadioButton
+                android:id="@+id/radio_font_xlarge"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Muy Grande"
+                android:textSize="20sp"
+                android:gravity="center_vertical" />
+        </RadioGroup>
+
+        <!-- TAMAÑO DE BOTONES -->
+        <TextView
+            android:id="@+id/button_size_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔘 Tamaño de Botones"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/button_size_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <RadioButton
+                android:id="@+id/radio_button_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Normal"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <RadioButton
+                android:id="@+id/radio_button_large"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Grande"
+                android:textSize="18sp"
+                android:gravity="center_vertical" />
+
+            <RadioButton
+                android:id="@+id/radio_button_xlarge"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Muy Grande (Recomendado)"
+                android:textSize="20sp"
+                android:gravity="center_vertical" />
+        </RadioGroup>
+
+        <!-- CONTRASTE ALTO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="space_between"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/contrast_label"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="⚪ Contraste Alto"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center_vertical" />
+
+            <Switch
+                android:id="@+id/contrast_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:scaleX="1.5"
+                android:scaleY="1.5" />
+        </LinearLayout>
+
+        <!-- FEEDBACK DE VOZ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="space_between"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/voice_label"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="🔊 Avisos de Voz"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center_vertical" />
+
+            <Switch
+                android:id="@+id/voice_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:scaleX="1.5"
+                android:scaleY="1.5" />
+        </LinearLayout>
+
+        <!-- DESCONEXIÓN AUTOMÁTICA -->
+        <TextView
+            android:id="@+id/disconnect_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏱️ Desconectar después de:"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="12dp" />
+
+        <RadioGroup
+            android:id="@+id/disconnect_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/radio_disconnect_15"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="15 minutos"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <RadioButton
+                android:id="@+id/radio_disconnect_30"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="30 minutos (Recomendado)"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <RadioButton
+                android:id="@+id/radio_disconnect_60"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="60 minutos"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+        </RadioGroup>
+
+        <!-- Botón Guardar -->
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:text="✓ GUARDAR"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="24dp" />
+    </LinearLayout>
+</ScrollView>

@@ -1,2 +1,0 @@
--keep class com.abuelos.controlremototv.** { *; }
--dontwarn com.abuelos.controlremototv.**

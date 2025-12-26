@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TV Control Remoto</string>
+    <string name="app_description">Control remoto para Android TV sin ADB</string>
+    
+    <!-- Pantalla principal -->
+    <string name="scan_network">Escanear Red</string>
+    <string name="connect">Conectar</string>
+    <string name="ip_hint">Ingresa IP del TV (ej: 192.168.1.100)</string>
+    <string name="status_waiting">Estado: Esperando conexión</string>
+    <string name="status_scanning">Escaneando red...</string>
+    <string name="status_connecting">Conectando...</string>
+    <string name="status_connected">¡Conectado!</string>
+    <string name="status_error">Error de conexión</string>
+    
+    <!-- Control remoto -->
+    <string name="remote_title">Control Remoto</string>
+    <string name="btn_up">↑</string>
+    <string name="btn_down">↓</string>
+    <string name="btn_left">←</string>
+    <string name="btn_right">→</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_back">Atrás</string>
+    <string name="btn_home">Inicio</string>
+    <string name="btn_menu">Menú</string>
+    <string name="btn_play">▶ Pausar</string>
+    <string name="btn_volume_up">Vol +</string>
+    <string name="btn_volume_down">Vol -</string>
+    <string name="btn_mute">Silencio</string>
+    
+    <!-- Mensajes -->
+    <string name="msg_no_tvs_found">No se encontraron TVs en la red</string>
+    <string name="msg_check_connection">Verifica que:\n1. El TV está encendido\n2. Está en la misma WiFi\n3. La IP es correcta</string>
+    <string name="msg_error_connecting">Error conectando</string>
+    <string name="msg_tip">💡 Tip: Asegúrate que el TV esté encendido y conectado a la misma WiFi</string>
+</resources>

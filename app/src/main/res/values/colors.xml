@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="bg_dark">#1a1a1a</color>
-    <color name="text_white">#ffffff</color>
-    <color name="btn_primary">#2196F3</color>
-    <color name="btn_danger">#f44336</color>
-    <color name="btn_secondary">#424242</color>
-</resources>

@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:versionCode="1"
+    android:versionName="1.0">
 
-    <!-- Permisos necesarios para controlar el TV -->
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-    <uses-permission android:name="android.permission.SEND_HEADSET_KEY" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.ControlRemotoTV"
-        tools:targetApi="31">
-
+        android:theme="@style/Theme.TVRemote">
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,6 +27,20 @@
             </intent-filter>
         </activity>
 
-    </application>
+        <activity
+            android:name=".RemoteActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".TVAppsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+    </application>
 </manifest>
