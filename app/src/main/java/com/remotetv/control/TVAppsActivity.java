@@ -31,7 +31,7 @@ public class TVAppsActivity extends AppCompatActivity {
 
         // Obtener TV IP del intent
         String tvIP = getIntent().getStringExtra("TV_IP");
-        protocol = new AndroidTVRemoteProtocol(tvIP);
+        protocol = new AndroidTVRemoteProtocol(this, tvIP);
         
         appManager = new TVAppManager(protocol);
         accessibilityManager = new ElderlyAccessibilityManager(this);

@@ -39,7 +39,7 @@ public class RemoteActivity extends AppCompatActivity {
         timeText = findViewById(R.id.time_text);
         
         // Conectar con el TV
-        protocol = new AndroidTVRemoteProtocol(tvIP);
+        protocol = new AndroidTVRemoteProtocol(this, tvIP);
         new Thread(() -> {
             if (!protocol.connect()) {
                 runOnUiThread(() -> 

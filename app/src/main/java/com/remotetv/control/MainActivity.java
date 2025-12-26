@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         instructionsText.setText("Espera un momento...");
 
         new Thread(() -> {
-            AndroidTVRemoteProtocol protocol = new AndroidTVRemoteProtocol(ip);
+            AndroidTVRemoteProtocol protocol = new AndroidTVRemoteProtocol(MainActivity.this, ip);
             boolean connected = protocol.connect();
             
             runOnUiThread(() -> {
