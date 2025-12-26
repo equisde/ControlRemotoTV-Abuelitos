@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Control TV</string>
+    <string name="searching_tv">Buscando TV...</string>
+    <string name="tv_found">TV encontrada</string>
+    <string name="connect">Conectar</string>
+    <string name="enter_ip">Ingrese la IP de su TV</string>
+    <string name="power">Encender/Apagar</string>
+    <string name="volume_up">Subir Volumen</string>
+    <string name="volume_down">Bajar Volumen</string>
+    <string name="channel_up">Canal +</string>
+    <string name="channel_down">Canal -</string>
+    <string name="mute">Silencio</string>
+    <string name="home">Inicio</string>
+    <string name="back">Atrás</string>
+    <string name="ok">OK</string>
+    <string name="menu">Menú</string>
+</resources>
