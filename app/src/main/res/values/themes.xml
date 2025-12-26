@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ControlRemotoTV" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/btn_primary</item>
+        <item name="colorPrimaryDark">@color/bg_dark</item>
+        <item name="colorAccent">@color/btn_primary</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

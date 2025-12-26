@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Control TV</string>
-    <string name="buscar_tv">BUSCAR MI TV</string>
-    <string name="conectar">CONECTAR</string>
-    <string name="buscando">Buscando tu TV...</string>
-    <string name="tv_encontrada">TV Encontrada</string>
-    <string name="no_tv_encontrada">No se encontró ninguna TV</string>
-    <string name="conectado">Conectado</string>
-    <string name="error_conexion">Error al conectar</string>
-    <string name="power">ENCENDER/APAGAR</string>
-    <string name="volume_up">SUBIR VOLUMEN</string>
-    <string name="volume_down">BAJAR VOLUMEN</string>
-    <string name="channel_up">CANAL ARRIBA</string>
-    <string name="channel_down">CANAL ABAJO</string>
-    <string name="menu">MENÚ</string>
-    <string name="home">INICIO</string>
-    <string name="back">ATRÁS</string>
-    <string name="ok">OK</string>
-    <string name="mute">SILENCIO</string>
+    <string name="app_name">Control Remoto TV - Para Abuelos</string>
+    <string name="remote_title">Control Remoto</string>
+    <string name="apps_title">Selecciona una App</string>
+    
+    <!-- Botones -->
+    <string name="btn_power">Poder</string>
+    <string name="btn_vol_up">Vol +</string>
+    <string name="btn_vol_down">Vol -</string>
+    <string name="btn_mute">Mute</string>
+    <string name="btn_up">↑</string>
+    <string name="btn_down">↓</string>
+    <string name="btn_left">←</string>
+    <string name="btn_right">→</string>
+    <string name="btn_select">OK</string>
+    <string name="btn_home">Inicio</string>
+    <string name="btn_back">Atrás</string>
+    <string name="btn_apps">Apps</string>
+    <string name="app_icon">App Icon</string>
 </resources>

@@ -1,94 +1,99 @@
-# Control Remoto para Android TV
+# Control Remoto TV - Para Abuelos
 
-## 📱 App de Control Remoto para Personas Mayores
+Una aplicación Android diseñada específicamente para personas mayores que deseen controlar su Android TV de forma fácil e intuitiva.
 
-Esta aplicación fue diseñada especialmente para adultos mayores, con una interfaz **GRANDE**, **CLARA** y **FÁCIL DE USAR**.
+## 🎯 Características
 
-### ✨ Características Principales
+- **Interfaz Grande y Clara**: Botones grandes y legibles, perfectos para personas con visión reducida
+- **Controles Básicos**: Navegación (arriba, abajo, izquierda, derecha), selección
+- **Control de Volumen y Poder**: Botones dedicados para volumen y encendido/apagado
+- **Números del 0-9**: Para cambiar canales rápidamente
+- **Gestor de Aplicaciones**: Lista y lanza aplicaciones instaladas en el TV
+- **Diseño Accesible**: Colores contrastados, texto grande, sin complejidades
 
-- **Botones GRANDES** con texto muy legible
-- **Colores brillantes** para identificar fácilmente cada función
-- **Conexión automática** - solo presiona "BUSCAR MI TV"
-- **Texto en MAYÚSCULAS** para mejor lectura
-- **Iconos grandes** junto al texto
+## 📱 Requisitos
 
-### 🎯 Funciones Disponibles
+- Android 5.0 (API 21) o superior
+- Permiso de acceso a red (para posible conectividad futura)
 
-1. **ENCENDER/APAGAR** (Botón rojo grande)
-2. **VOLUMEN** (Botones verdes)
-   - Subir volumen
-   - Bajar volumen
-   - Silencio
-3. **CANALES** (Botones naranjas)
-   - Canal arriba
-   - Canal abajo
-4. **NAVEGACIÓN** (Botones azules)
-   - Arriba, Abajo, Izquierda, Derecha
-   - OK (botón verde central)
-5. **FUNCIONES ESPECIALES**
-   - Atrás
-   - Inicio
-   - Menú
+## 🚀 Instalación
 
-### 📋 Requisitos
+1. Descarga el APK desde la sección de Releases
+2. Instala en tu teléfono o tablet Android
+3. Abre la aplicación
+4. ¡Comienza a controlar tu TV!
 
-- Android 5.0 o superior
-- TV Android conectada a la misma red WiFi
-- Conexión WiFi activa
+## 🎮 Cómo Usar
 
-### 🚀 Cómo Usar
+### Pantalla Principal (Remoto)
+- **↑↓←→**: Navega por los menús del TV
+- **OK (Centro)**: Selecciona la opción
+- **Poder**: Enciende/apaga el TV
+- **Vol +/Vol -**: Aumenta o disminuye el volumen
+- **Mute**: Silencia el TV
+- **Inicio**: Vuelve a la pantalla de inicio del TV
+- **Atrás**: Retrocede a la pantalla anterior
+- **Apps**: Abre el gestor de aplicaciones
+- **0-9**: Cambia directamente a un canal
 
-1. **Instala la app** en tu teléfono
-2. **Asegúrate** de que tu TV esté encendida
-3. **Conecta** tu teléfono al mismo WiFi que la TV
-4. **Abre la app** y presiona "BUSCAR MI TV"
-5. **Espera** unos segundos mientras busca
-6. **Presiona "CONECTAR"** cuando encuentre la TV
-7. **¡Listo!** Ya puedes controlar tu TV
+### Pantalla de Aplicaciones
+1. Toca el botón "Apps" en el remoto
+2. Se mostrará una lista de todas las aplicaciones instaladas
+3. Toca cualquier app para abrirla en el TV
+4. Toca "Atrás" para volver al remoto
 
-### 🔧 Cómo Compilar
+## 🛠️ Compilación
 
+### Requisitos
+- Java JDK 11 o superior
+- Android SDK
+- Gradle
+
+### Compilar APK
 ```bash
-cd ControlRemotoTV
-chmod +x gradlew
-./gradlew assembleDebug
+./gradlew assembleRelease
 ```
 
-El APK se generará en: `app/build/outputs/apk/debug/app-debug.apk`
+El APK se generará en: `app/build/outputs/apk/release/app-release-unsigned.apk`
 
-### 📝 Notas Importantes
+## 📋 Estructura del Proyecto
 
-- **Texto grande**: Todos los botones usan tamaño de fuente de 20-28sp
-- **Alto contraste**: Colores brillantes sobre fondo claro
-- **Feedback visual**: Mensajes claros al presionar botones
-- **Sin complicaciones**: Solo los botones esenciales
+```
+ControlRemotoTV-Abuelitos/
+├── app/
+│   ├── src/main/
+│   │   ├── java/com/abuelos/controlremototv/
+│   │   │   ├── MainActivity.java
+│   │   │   ├── AppManager.java
+│   │   │   ├── AppAdapter.java
+│   │   │   └── AppInfo.java
+│   │   └── res/
+│   │       ├── layout/
+│   │       ├── values/
+│   │       └── drawable/
+│   └── build.gradle
+├── .github/workflows/
+│   └── build.yml (CI/CD con GitHub Actions)
+└── build.gradle
+```
 
-### 🎨 Colores del Control
+## 🤝 Contribuciones
 
-- 🔴 **ROJO** = Encender/Apagar
-- 🟢 **VERDE** = Volumen y OK
-- 🟠 **NARANJA** = Canales y Atrás
-- 🔵 **AZUL** = Navegación y funciones
+Las contribuciones son bienvenidas. Por favor:
+1. Haz un fork del proyecto
+2. Crea una rama con tu feature
+3. Commit tus cambios
+4. Push a la rama
+5. Abre un Pull Request
 
-### 👴👵 Diseñado para Abuelitos
+## 📝 Licencia
 
-Esta app fue creada pensando en la comodidad y facilidad de uso para personas mayores:
-- Sin menús complicados
-- Sin configuraciones confusas
-- Solo botones grandes y claros
-- Instrucciones paso a paso
-- Mensajes grandes y legibles
+Este proyecto está bajo la Licencia MIT.
 
-### ⚙️ Compatibilidad
+## 👨‍👩‍👧‍👦 Dedicado
 
-Compatible con la mayoría de Android TVs que tengan ADB habilitado o servidor remoto activo.
-
-### 📱 Capturas de Pantalla
-
-La app tiene dos pantallas simples:
-1. **Pantalla de Conexión**: Para buscar y conectar con la TV
-2. **Control Remoto**: Con todos los botones grandes y claros
+Dedicado a todas las personas mayores que merecen tecnología fácil de usar.
 
 ---
 
-**Hecho con ❤️ para nuestros abuelitos**
+**¿Preguntas o sugerencias?** Abre un issue en el repositorio.
