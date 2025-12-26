@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/drawable_button_ok.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/drawable/button_ok.xml"
+    },
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/drawable_button_bg.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/drawable/button_bg.xml"
+    },
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/drawable_button_power.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/drawable/button_power.xml"
+    },
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/layout_activity_main.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.abuelitos.remotetv.app-merged_res-33:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.abuelitos.remotetv.app-main-35:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    }
+]
