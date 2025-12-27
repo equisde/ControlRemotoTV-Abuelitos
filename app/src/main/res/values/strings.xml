@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Control para Abuelitos</string>
+    <string name="setup_title">Configura tu Control</string>
+    <string name="setup_desc">Buscaremos tu televisión automáticamente. Asegúrate de que esté encendida.</string>
+    <string name="searching">Buscando televisiones...</string>
+    <string name="connect">Conectar</string>
+    <string name="pairing_code">Escribe el código que sale en tu TV:</string>
+    <string name="pairing_failed">Algo salió mal, intentémoslo de nuevo, mijo.</string>
+    <string name="btn_up">ARRIBA</string>
+    <string name="btn_down">ABAJO</string>
+    <string name="btn_left">IZQUIERDA</string>
+    <string name="btn_right">DERECHA</string>
+    <string name="btn_ok">OK / ENTER</string>
+    <string name="btn_back">VOLVER</string>
+    <string name="btn_home">INICIO</string>
+    <string name="btn_power">ENCENDER / APAGAR</string>
+</resources>
