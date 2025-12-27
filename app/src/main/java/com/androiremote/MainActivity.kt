@@ -1,5 +1,6 @@
 package com.androiremote
 
+import android.content.Context
 import android.net.nsd.NsdServiceInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
