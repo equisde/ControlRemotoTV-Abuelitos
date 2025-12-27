@@ -1,0 +1,100 @@
+syntax = "proto2";
+
+package android.remote;
+
+option java_package = "com.google.android.remote.protocol";
+option java_outer_classname = "RemoteMessageOuterClass";
+
+message RemoteMessage {
+    optional int32 seq = 1;
+    optional RemoteKeyMessage remoteKey = 2;
+    optional RemoteSetVolumeLevelMessage remoteSetVolumeLevel = 3;
+    optional RemoteSetVolumeMuteMessage remoteSetVolumeMute = 4;
+    optional RemoteSetInputMessage remoteSetInput = 5;
+    optional RemoteLaunchAppMessage remoteLaunchApp = 6;
+    optional RemoteImeMessage remoteImeMessage = 7;
+    optional RemoteStartVoiceMessage remoteStartVoice = 8;
+    optional RemoteVoiceDataMessage remoteVoiceData = 9;
+    optional RemoteStopVoiceMessage remoteStopVoice = 10;
+    optional RemotePingRequest remotePingRequest = 11;
+    optional RemotePingResponse remotePingResponse = 12;
+    optional RemoteDeviceInfo remoteDeviceInfo = 13;
+    optional RemoteSetActive remoteSetActive = 14;
+    optional RemoteTapMessage remoteTap = 15;
+    optional RemoteSetRelativeVolumeLevelMessage remoteSetRelativeVolumeLevel = 16;
+    optional RemoteSetEndpointMessage remoteSetEndpoint = 17;
+    optional RemoteSetPairingCodeMessage remoteSetPairingCode = 18;
+    optional RemoteSetPinMessage remoteSetPin = 19;
+    optional RemoteStartSetupMessage remoteStartSetup = 20;
+    optional RemoteSelectSetupServiceMessage remoteSelectSetupService = 21;
+    optional RemoteSetupServiceResponse remoteSetupServiceResponse = 22;
+    optional RemoteSetupServiceRequest remoteSetupServiceRequest = 23;
+    optional RemoteSetOobDataMessage remoteSetOobData = 24;
+    optional RemoteSetDisplayMessage remoteSetDisplay = 25;
+    optional RemoteConfigureMessage remoteConfigure = 26;
+    optional RemoteGamePadMessage remoteGamePad = 27;
+}
+
+message RemoteKeyMessage {
+    optional int32 keyCode = 1;
+    optional int32 action = 2; // 0: down, 1: up
+}
+
+message RemoteSetVolumeLevelMessage {
+    optional int32 level = 1;
+}
+
+message RemoteSetVolumeMuteMessage {
+    optional bool mute = 1;
+}
+
+message RemoteSetInputMessage {
+    optional string id = 1;
+}
+
+message RemoteLaunchAppMessage {
+    optional string packageName = 1;
+}
+
+message RemoteImeMessage {
+    // Definición simplificada para IME
+    optional string text = 1;
+}
+
+message RemoteStartVoiceMessage {}
+message RemoteVoiceDataMessage {}
+message RemoteStopVoiceMessage {}
+message RemotePingRequest {
+    optional int32 val1 = 1;
+}
+message RemotePingResponse {
+    optional int32 val1 = 1;
+}
+message RemoteDeviceInfo {
+    optional string model = 1;
+    optional string vendor = 2;
+    optional int32 unknown1 = 3;
+    optional string appVersion = 4;
+    optional string packageName = 5;
+}
+message RemoteSetActive {
+    optional int32 active = 1;
+}
+message RemoteTapMessage {}
+message RemoteSetRelativeVolumeLevelMessage {}
+message RemoteSetEndpointMessage {}
+message RemoteSetPairingCodeMessage {
+    optional string code = 1;
+}
+message RemoteSetPinMessage {}
+message RemoteStartSetupMessage {}
+message RemoteSelectSetupServiceMessage {}
+message RemoteSetupServiceResponse {}
+message RemoteSetupServiceRequest {}
+message RemoteSetOobDataMessage {}
+message RemoteSetDisplayMessage {}
+message RemoteConfigureMessage {
+    optional int32 code1 = 1; // Often 622
+    optional RemoteDeviceInfo deviceInfo = 2;
+}
+message RemoteGamePadMessage {}

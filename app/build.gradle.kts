@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.protobuf")
 }
 
 android {
@@ -71,4 +72,26 @@ dependencies {
     
     // Para el protocolo Android TV (TLS/mTLS) y descubrimiento
     implementation("commons-net:commons-net:3.9.0")
+    
+    // Protobuf
+    implementation("com.google.protobuf:protobuf-java:3.25.1")
+    
+    // Bouncy Castle para generación de certificados
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.77")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.77")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.1"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
